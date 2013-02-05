@@ -1,0 +1,44 @@
+	<script type=text/javascript src="{{ url_for('static',
+							filename='ckeditor/ckeditor.js') }}"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>				
+	<script type=text/javascript src="{{ url_for('static',
+							filename='/ckeditor/adapters/jquery.js') }}"></script>
+	<script type=text/javascript >
+		$(document).ready(function(){ // (s)document.ready
+			$("textarea[name='editor']").ckeditor(function(){},{height:700,width: 300});
+		}); // (e)document.ready
+	</script>
+{% extends "admin/models/base_forms.html" %}
+
+
+{% block breadcrumbs %}
+ {{ super() }}
+ <li><span class="divider">/</span> <a href=".">Add new</a></li>
+{% endblock %}
+
+{% block tab_add_class %}active{% endblock %}
+
+{% block content %}
+  {% include "admin/includes/form_raw_id.html" %}
+  {% if form.errors %}
+    <div class="alert alert-block alert-error">
+      <a class="close" data-dismiss="alert" href="#">×</a>
+      <p>There were errors with your form submission</p>
+    </div>
+  {% endif %}
+  <form method="post" action="." class="edit form-horizontal" enctype="multipart/form-data">
+    <fieldset>
+      <legend>Add New {{ model_admin.get_display_name() }}</legend>
+     
+	  <p><input class="span5" id="title" name="title" type="title">
+	  <p><textarea  class ="ckeditor" name="message"></textarea><p>
+      <div class="form-actions">
+        <button class="btn btn-primary" name="save" type="submit">Save</button>
+        <button class="btn" name="save_add" type="submit">Save and add new</button>
+        <button class="btn" name="save_edit" type="submit">Save and edit</button>
+        <a class="btn" href="{{ url_for(model_admin.get_url_name('index')) }}">Cancel</a>
+        <a class="btn btn-danger pull-right" href="{{ url_for(model_admin.get_url_name('delete'), id=instance.get_id()) }}">Delete</a>
+      </div>
+    </fieldset>
+  </form>
+{% endblock %}
